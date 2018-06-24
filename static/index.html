@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http—equiv="X—UA—Compatib1e" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Video Player</title> 
+		<link id="bootstrap_css_link" href="https://bootswatch.com/4/cyborg/bootstrap.min.css" rel="stylesheet">
+		<!-- HTML5 shim and Respond. js for IE8 support of HTML5 elements and media
+		queries   -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file://  -->
+		<!--[if lt IE 9]> 
+		<script
+		src="https://oss.maxcdn.com/htm15shiv/3.7.3/htm15shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js></script> 
+		<![endif]--> 
+	</head>
+	<body>
+		<div id="main_body" style="height: 100vh; width: 100vw; overflow: hidden;">
+			<div id="navbar">
+				<nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+					<a class="navbar-brand" href="#">Navbar</a>
+					<button class="navbar-toggler" aria-expanded="false" aria-controls="navbarColor03" aria-label="Toggle navigation" type="button" data-target="#navbarColor03" data-toggle="collapse">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<div class="collapse navbar-collapse" id="navbarColor03">
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item active">
+								<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Features</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Pricing</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">About</a>
+							</li>
+						</ul>
+						<form class="form-inline my-2 my-lg-0">
+							<input class="form-control mr-sm-2" type="text" placeholder="Search">
+							<button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+						</form>
+					</div>
+				</nav>
+			</div>
+			<div id="main_viewport_wrapper" style="height: 100%; width: 100%; overflow: hidden;">
+				<div id="main_viewport" style="display: table; height: 100%; width: 100%; margin: 0;">
+					<div id="top_spacer" style="visibility: hidden; display: table-row;">
+						<nav class="navbar"><span class="navbar-brand">&nbsp;</span></nav>
+					</div>
+					<div id="visible_content_wrapper_wrapper_wrapper" style="display: table-row; height: 100%;">
+						<div id="visible_content_wrapper_wrapper" style="width: 100%; height: 100%; position: relative;">
+							<div id="visible_content_wrapper" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0;">
+								<div id="visible_content" style="height: 100%; width: 100%; overflow: auto; margin:0;" class="row">
+									<div id="center_content" class="col-lg-9" style="height: 100%; overflow: auto; display: none;"></div>
+									<div id="right_sidebar" class="col-lg-12" style="height: 100%; overflow: auto;"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="scripts" style="display:none;">
+			<!-- jQuery (necessary for Bootstrap's JavaScript plugins)  -->
+			<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+			<script src="/js/dynamic_js_loader.js"></script>
+			<script src="/js/dynamic_js_list.js"></script>
+			<div id="dynamic_scripts"></div>
+		</div>
+	</body>
+</html>
