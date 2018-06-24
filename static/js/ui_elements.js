@@ -35,7 +35,7 @@ class ui_elements {
 		}
 
 		static element_list(elements, columns, min_win_size) {
-			if(columns>12) {
+			if(columns>6 && !([7,9,11,12].includes(columns))) {
 				if((columns % 2) == 0) {
 					var col_a = [];
 					var col_b = [];
