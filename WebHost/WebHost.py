@@ -64,12 +64,13 @@ class WebHost(object):
 	def get_dispatcher(self):
 		return self.dispatcher
 
-	def log_connection(self,interface,resource,action,method):
+	def log_connection(self,interface,resource,action,method,include_body):
 		log_entry = {
 			"docstring":getattr(interface,action).__doc__,
-			"function_name":getattr(interface,action).__name__,
+			"function_name":action,
 			"resource":resource,
 			"method":method,
+			"include_body":include_body,
 		}
 		self.resource_list.append(log_entry)
 
@@ -162,6 +163,11 @@ class WebDispatcher(object):
 		return ret
 
 	def connect(self, resource, callback, method):
+		def callback_body_wrapper(body, *args):
+			return callback(*args)
+		self.connect_body(resource, callback_body_wrapper, method)
+
+	def connect_body(self, resource, callback, method):
 		if method not in self.resource_dict:
 			self.initialize_request_handler(method)
 		(url_prefix, url_param_count) = self.split_url_params(resource)
@@ -183,7 +189,7 @@ class WebDispatcher(object):
 			for (url_prefix, url_param_count, params) in self.get_possible_split_url_params(url_no_browseparams):
 				if url_prefix in self.resource_dict[method]['resources']:
 					if url_param_count in self.resource_dict[method]['resources'][url_prefix]:
-						return self.resource_dict[method]['resources'][url_prefix][url_param_count](*params)
+						return self.resource_dict[method]['resources'][url_prefix][url_param_count](body, *params)
 			if not self.resource_dict[method]['default'] is None:
 				return self.resource_dict[method]['default'](url=url_no_browseparams, headers=headers, body=body)
 		return None
@@ -306,7 +312,22 @@ class WebInterface(object):
 		self.dispatcher = self.host.get_dispatcher()
 		self.dispatcher.connect(resource, callback, method)
 		# log this connection on the host
-		self.host.log_connection(self,resource,callback.__name__,method)
+		self.host.log_connection(self,resource,callback.__name__,method,False)
+	
+	def connect_body(self, resource, action, method):
+		callback = getattr(self, action)
+		self.connect_body_callback(resource, callback, method)
+	
+	def connect_body_callback(self,resource,callback,method):
+		"""
+		connects a specified callback (function) in this object
+		to the specified resource (URL)
+		and http method (GET/PUT/POST/DELETE)
+		"""
+		self.dispatcher = self.host.get_dispatcher()
+		self.dispatcher.connect_body(resource, callback, method)
+		# log this connection on the host
+		self.host.log_connection(self,resource,callback.__name__,method,True)
 
 class WebDocs(WebInterface):
 	def __init__(self,host):
@@ -323,17 +344,26 @@ class WebDocs(WebInterface):
 		"""return the documentation page in HTML format"""
 		resources = ""
 		for resource in self.host.resource_list:
+			params = resource["resource"].split('/:')[1:]
+			if resource["include_body"]:
+				params = ['body'] + params
+			param_str = ''
+			for param in params:
+				if len(param_str)>0:
+					param_str = param_str + ','
+				param_str = param_str + param
 			resource_html = """
 				<tr>
 					<td><a href="{resource}">{resource}</a></td>
 					<td>{method}</td>
-					<td>{function_name}</td>
+					<td>{function_name}({params})</td>
 					<td>{docstring}</td>
 				</tr>
 			""".format(
 				resource = resource["resource"],
 				method = resource["method"],
 				function_name = resource["function_name"],
+				params = param_str,
 				docstring = resource["docstring"].replace("\n","<br />"),
 			)
 			resources = resources+resource_html
