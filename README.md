@@ -1,5 +1,7 @@
 # VideoPlayer
 
+This project is still in the early stages of development, and is not yet at a "usable" state.  To see progress in full implementation, please see the "Issues" tab.
+
 A video player capable of combining videos from multiple video streaming services into a single webpage.
 
 Another feature is synchronous playback between multiple clients. 
